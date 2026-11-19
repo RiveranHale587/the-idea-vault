@@ -1,0 +1,432 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Idea Vault</title>
+<style>
+:root {
+  --bg: #080d1c;
+  --panel: #111a30;
+  --panel2: #17233e;
+  --blue: #55c8ff;
+  --purple: #a58aff;
+  --text: #f2f5ff;
+  --muted: #9ba9c5;
+  --border: rgba(151,178,255,.16);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 15% 0%, #172b52 0%, transparent 42%),
+    radial-gradient(ellipse at 90% 20%, #241747 0%, transparent 38%),
+    var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+}
+header {
+  padding: 22px 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8,13,28,.75);
+}
+.logo {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+.logo span { color: var(--blue); }
+nav { display:flex; gap:24px; align-items:center; }
+nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+}
+nav a:hover { color: var(--blue); }
+.hero {
+  padding: 75px 8% 55px;
+  max-width: 1100px;
+  margin: auto;
+}
+.eyebrow {
+  color: var(--blue);
+  letter-spacing: 3px;
+  font-size: 11px;
+  font-weight: bold;
+}
+h1 {
+  font-size: clamp(42px, 7vw, 76px);
+  line-height: 1.03;
+  margin: 17px 0;
+  letter-spacing: -3px;
+}
+h1 span {
+  background: linear-gradient(90deg,var(--blue),var(--purple));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.hero p {
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 590px;
+  font-size: 16px;
+}
+.primary {
+  background: linear-gradient(100deg,#37b9f5,#9276ff);
+  color: #071020;
+  border: 0;
+  padding: 14px 21px;
+  border-radius: 9px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 16px;
+}
+.primary:hover { filter: brightness(1.12); }
+.section {
+  padding: 35px 8% 75px;
+  max-width: 1250px;
+  margin: auto;
+}
+.section-heading {
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap: 20px;
+  flex-wrap:wrap;
+}
+h2 { font-size: 27px; margin: 0 0 8px; }
+.sub { color: var(--muted); font-size: 14px; }
+.search {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 13px 15px;
+  width: min(100%,260px);
+  outline: none;
+}
+.search:focus { border-color: var(--blue); }
+.filters {
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  margin: 25px 0;
+}
+.filter {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--muted);
+  border-radius: 30px;
+  padding: 9px 15px;
+  cursor:pointer;
+}
+.filter.active, .filter:hover {
+  color: var(--blue);
+  border-color: var(--blue);
+  background: #14253c;
+}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(235px,1fr));
+  gap:18px;
+}
+.card {
+  background: linear-gradient(145deg,rgba(25,39,68,.95),rgba(14,22,42,.96));
+  border:1px solid var(--border);
+  border-radius:15px;
+  overflow:hidden;
+  transition:.2s;
+}
+.card:hover {
+  transform:translateY(-4px);
+  border-color:rgba(85,200,255,.55);
+}
+.art {
+  height:145px;
+  display:grid;
+  place-items:center;
+  font-size:57px;
+  background:radial-gradient(circle at center,#294b76,#15213b 65%,#10192d);
+}
+.card-content { padding:19px; }
+.tag {
+  color:var(--blue);
+  font-size:10px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  font-weight:bold;
+}
+.card h3 { margin:10px 0 8px; font-size:19px; }
+.card p {
+  color:var(--muted);
+  line-height:1.6;
+  font-size:13px;
+  min-height:42px;
+}
+.card button {
+  color:var(--blue);
+  border:0;
+  background:none;
+  padding:8px 0 0;
+  cursor:pointer;
+  font-weight:bold;
+}
+.empty {
+  display:none;
+  color:var(--muted);
+  padding:30px;
+  text-align:center;
+  border:1px dashed var(--border);
+  border-radius:12px;
+}
+.invite {
+  margin: 20px 8% 75px;
+  padding:35px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:linear-gradient(110deg,#142b49,#211b42);
+  text-align:center;
+}
+.invite p { color:var(--muted); line-height:1.7; }
+footer {
+  border-top:1px solid var(--border);
+  padding:25px 8%;
+  color:var(--muted);
+  font-size:12px;
+  text-align:center;
+}
+.modal {
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:5;
+  background:rgba(0,0,0,.78);
+  padding:20px;
+  align-items:center;
+  justify-content:center;
+}
+.modal.show { display:flex; }
+.modal-box {
+  width:min(100%,480px);
+  background:#111b32;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:25px;
+  max-height:90vh;
+  overflow:auto;
+}
+.modal-box p { color:var(--muted); line-height:1.7; }
+.close {
+  float:right;
+  border:0;
+  background:none;
+  color:white;
+  font-size:23px;
+  cursor:pointer;
+}
+label { display:block; margin:15px 0 7px; font-size:13px; }
+input, textarea, select {
+  width:100%;
+  padding:12px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:#091225;
+  color:white;
+}
+textarea { min-height:100px; resize:vertical; }
+.notice {
+  background:#202b46;
+  border-radius:9px;
+  padding:12px;
+  font-size:12px;
+  color:#c3d5f5;
+  line-height:1.6;
+}
+@media(max-width:600px) {
+  header { padding:18px 5%; }
+  nav { gap:12px; }
+  nav a { font-size:12px; }
+  .hero { padding:55px 6% 35px; }
+  .section { padding:30px 6% 55px; }
+  .invite { margin:10px 6% 55px; padding:25px 18px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">THE <span>IDEA VAULT</span></div>
+  <nav>
+    <a href="#explore">Explore</a>
+    <a href="#contribute">Contribute</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">ARCHIVE ACCESS // OPEN</div>
+  <h1>Ideas don't have<br>to be <span>possible.</span></h1>
+  <p>
+    Welcome to a collection of things that don't exist — yet.
+    Discover impossible inventions, unusual creatures, imaginary
+    places, strange stories, and ideas that deserve a place in the archive.
+  </p>
+  <button class="primary" onclick="document.querySelector('#explore').scrollIntoView({behavior:'smooth'})">
+    Explore the archive →
+  </button>
+</section>
+
+<section class="section" id="explore">
+  <div class="section-heading">
+    <div>
+      <div class="eyebrow">THE COLLECTION</div>
+      <h2>Explore the exhibits</h2>
+      <div class="sub">Every idea has a place here.</div>
+    </div>
+    <input class="search" id="search" placeholder="Search the archive..." oninput="filterCards()">
+  </div>
+
+  <div class="filters">
+    <button class="filter active" onclick="setFilter('all',this)">All exhibits</button>
+    <button class="filter" onclick="setFilter('inventions',this)">Inventions</button>
+    <button class="filter" onclick="setFilter('creatures',this)">Creatures</button>
+    <button class="filter" onclick="setFilter('places',this)">Places</button>
+    <button class="filter" onclick="setFilter('stories',this)">Stories</button>
+    <button class="filter" onclick="setFilter('other',this)">Other ideas</button>
+  </div>
+
+  <div class="grid" id="exhibits">
+    <article class="card" data-category="inventions">
+      <div class="art">🌌</div>
+      <div class="card-content">
+        <div class="tag">Invention · Demo exhibit</div>
+        <h3>Pocket Galaxy</h3>
+        <p>A tiny floating universe that rearranges its stars whenever you make a wish.</p>
+        <button onclick="details('Pocket Galaxy','A tiny floating universe that rearranges its stars whenever you make a wish.')">View exhibit →</button>
+      </div>
+    </article>
+
+    <article class="card" data-category="creatures">
+      <div class="art">🐋</div>
+      <div class="card-content">
+        <div class="tag">Creature · Demo exhibit</div>
+        <h3>Cloud Whale</h3>
+        <p>A gentle sky creature that swims through clouds and leaves rainbows behind.</p>
+        <button onclick="details('Cloud Whale','A gentle sky creature that swims through clouds and leaves rainbows behind.')">View exhibit →</button>
+      </div>
+    </article>
+
+    <article class="card" data-category="places">
+      <div class="art">🏙️</div>
+      <div class="card-content">
+        <div class="tag">Place · Demo exhibit</div>
+        <h3>Forgotten City</h3>
+        <p>A hidden city that only appears on maps drawn by people who are dreaming.</p>
+        <button onclick="details('Forgotten City','A hidden city that only appears on maps drawn by people who are dreaming.')">View exhibit →</button>
+      </div>
+    </article>
+
+    <article class="card" data-category="other">
+      <div class="art">⚙️</div>
+      <div class="card-content">
+        <div class="tag">Other idea · Demo exhibit</div>
+        <h3>Mood Machine</h3>
+        <p>A fictional machine that turns a feeling into a tiny, colorful weather system.</p>
+        <button onclick="details('Mood Machine','A fictional machine that turns a feeling into a tiny, colorful weather system.')">View exhibit →</button>
+      </div>
+    </article>
+  </div>
+  <div class="empty" id="empty">No exhibits found. Try another search!</div>
+</section>
+
+<section class="invite" id="contribute">
+  <div class="eyebrow">YOUR IDEA BELONGS HERE</div>
+  <h2>Have something unusual?</h2>
+  <p>
+    Invent a machine. Imagine a creature. Build a world.<br>
+    The archive is waiting for its next exhibit.
+  </p>
+  <button class="primary" onclick="openModal()">Preview submission form →</button>
+</section>
+
+<footer>
+  THE IDEA VAULT · A GAME HUB CREATIVE PROJECT · DEMO VERSION
+</footer>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <button class="close" onclick="closeModal()">×</button>
+    <div class="eyebrow">NEW ARCHIVE ENTRY</div>
+    <h2 id="modalTitle">Submit an idea</h2>
+    <p id="modalDescription">This is a preview of the submission experience.</p>
+    <div id="submissionFields">
+      <div class="notice">
+        Demo only: this form does not send or save anything yet.
+        Real submissions will be added after we build secure accounts
+        and curator approval.
+      </div>
+      <label>Exhibit title</label>
+      <input placeholder="Give your idea a name..." disabled>
+      <label>Category</label>
+      <select disabled>
+        <option>Choose a category</option>
+        <option>Invention</option>
+        <option>Creature</option>
+        <option>Place</option>
+        <option>Story</option>
+        <option>Other idea</option>
+      </select>
+      <label>Describe your idea</label>
+      <textarea placeholder="Tell us about it..." disabled></textarea>
+    </div>
+    <button class="primary" onclick="closeModal()">Got it!</button>
+  </div>
+</div>
+
+<script>
+let currentFilter = "all";
+
+function setFilter(category, button) {
+  currentFilter = category;
+  document.querySelectorAll(".filter").forEach(b => b.classList.remove("active"));
+  button.classList.add("active");
+  filterCards();
+}
+
+function filterCards() {
+  const term = document.getElementById("search").value.toLowerCase();
+  let visible = 0;
+  document.querySelectorAll(".card").forEach(card => {
+    const matchesCategory = currentFilter === "all" || card.dataset.category === currentFilter;
+    const matchesSearch = card.innerText.toLowerCase().includes(term);
+    const show = matchesCategory && matchesSearch;
+    card.style.display = show ? "" : "none";
+    if (show) visible++;
+  });
+  document.getElementById("empty").style.display = visible ? "none" : "block";
+}
+
+function openModal() {
+  document.getElementById("modalTitle").innerText = "Submit an idea";
+  document.getElementById("modalDescription").innerText = "This is a preview of the submission experience.";
+  document.getElementById("submissionFields").style.display = "block";
+  document.getElementById("modal").classList.add("show");
+}
+
+function details(title, description) {
+  document.getElementById("modalTitle").innerText = title;
+  document.getElementById("modalDescription").innerText = description;
+  document.getElementById("submissionFields").style.display = "none";
+  document.getElementById("modal").classList.add("show");
+}
+
+function closeModal() {
+  document.getElementById("modal").classList.remove("show");
+}
+</script>
+</body>
+</html>
